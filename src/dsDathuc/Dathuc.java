@@ -24,6 +24,7 @@ public class Dathuc {
 
     public Dathuc(String string) {
         Donthuc donthuc;
+        Dathuc dathuc=new Dathuc();
         string = string.toLowerCase();
         string = string.replace(" ", "");
         string = string.replace("x^0", "");
@@ -36,7 +37,13 @@ public class Dathuc {
         String[] arrStr = string.split(",");
         for (String arrStr1 : arrStr) {
             donthuc = new Donthuc(arrStr1);
-            this.themDonthuc(donthuc);
+            dathuc.themDonthuc(donthuc);
+        }
+        dathuc = dathuc.thugonDathuc();
+        this.dsDonthuc = new Donthuc[dathuc.length];
+        for (int i = 0; i < dathuc.length; i++) {
+            this.dsDonthuc[i] = new Donthuc(dathuc.layDonthuc(i));
+            length = dathuc.length;
         }
 
     }
@@ -192,7 +199,7 @@ public class Dathuc {
         ketqua[0] = new Dathuc();
         ketqua[1] = this;
 
-        Dathuc dathucBichia = new Dathuc(this);;
+        Dathuc dathucBichia = new Dathuc(this);
         dathucChia = dathucChia.thugonDathuc();
         dathucBichia = dathucBichia.thugonDathuc();
         if(dathucChia.layDodai()==0){
@@ -269,7 +276,7 @@ public class Dathuc {
         }
         if (ketqua.equals("")) {
             return "0";
-        }
+        }ketqua=ketqua.replace("+ -", "-");
         ketqua = ketqua.substring(0, ketqua.length() - 2);
         ketqua = ketqua.trim();
 

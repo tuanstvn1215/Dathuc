@@ -30,7 +30,11 @@ public class Donthuc {
         String[] pt = donthuc.split("x");
         if (donthuc.contains("x")) {
             if (donthuc.charAt(0) != 'x' && donthuc.charAt(donthuc.length() - 1) != 'x') {
-                so = Float.parseFloat(pt[0]);
+                if(donthuc.charAt(0) == '-'){
+                  so = -1;
+                }else{
+                  so = Float.parseFloat(pt[0]);
+                }
                 mu = Integer.parseInt(pt[1]);
 
             }
@@ -49,7 +53,6 @@ public class Donthuc {
                   so = -1;
                 }else{
                   so = Float.parseFloat(pt[0]);
-                  
                 }
                 mu = 1;
             }

@@ -24,15 +24,15 @@ public class App extends javax.swing.JFrame {
     private int bac;
     private float x;
     private String txtLoai;
-    private List<History> history;
-    private int loai;//0=chia,1=nhan,2=cong,3=tru,4=dao ham
+    private final List<History> history;
+    private int loai;//0=chia,1=nhan,2=cong,3=tru,4=dao ham,5 giatri
 
     /**
      * Creates new form App
      */
     public App() {
         initComponents();
-        history = new ArrayList<History>();
+        history = new ArrayList<>();
         dathuc1 = new Dathuc();
         dathuc2 = new Dathuc();
         ketqua = new Dathuc();
@@ -56,7 +56,7 @@ public class App extends javax.swing.JFrame {
         for (int i = 0; i < history.size(); i++) {
             Vector dong = new Vector();
             dong.add(history.get(i).layThoigian());
-            dong.add(new String(history.get(i).layKetqua().replaceAll("'", " dư ")));
+            dong.add(history.get(i).layKetqua().replaceAll("'", " dư "));
             switch (history.get(i).layLoai()) {
                 case -1:
 
@@ -440,21 +440,29 @@ public class App extends javax.swing.JFrame {
     private void tableLichsuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableLichsuMouseClicked
         int sodong = tableLichsu.getSelectedRow();
         btnTinh.setEnabled(true);
+        txtDathuc1.setEnabled(true);
+        txtDathuc2.setEnabled(true);
         txtDathuc1.setText(history.get(sodong).layDathuc1());
         txtDathuc2.setText(history.get(sodong).layDathuc2());
         loai = history.get(sodong).layLoai();
         switch (loai) {
             case 0:
                 txtLoai = "Chia đa thức";
+                lbldathuc2.setText("Đa thức chia là:");
+               
                 break;
             case 1:
                 txtLoai = "Nhân đa thức";
+                lbldathuc2.setText("Đa thức 2:");
+                
                 break;
             case 2:
                 txtLoai = "Cộng đa thức";
+                lbldathuc2.setText("Đa thức 2:");
                 break;
             case 3:
                 txtLoai = "Trừ đa thức";
+                lbldathuc2.setText("Đa thức trừ là:");
                 break;
             case 4:
                 txtLoai = "Đạo hàm đa thức";
@@ -466,8 +474,7 @@ public class App extends javax.swing.JFrame {
                 break;
         }
         lblLoai.setText(txtLoai);
-        txtDathuc1.setEnabled(true);
-        txtDathuc2.setEnabled(true);
+
 
         // TODO add your handling code here:
     }//GEN-LAST:event_tableLichsuMouseClicked
@@ -526,7 +533,7 @@ public class App extends javax.swing.JFrame {
                 themLichsu(dathuc1.toString(), dathuc2.toString(), ketqua.toString(), loai);
             }
             datlai();
-        } catch (Exception ex) {
+        } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "Nhập vào sai định dạng", "Lỗi định dạng", 1);
         }
         // TODO add your handling code here:
@@ -540,6 +547,7 @@ public class App extends javax.swing.JFrame {
         loai = 2;
         btnTinh.setEnabled(true);
         lblLoai.setText("Cộng đa thức");
+        lbldathuc2.setText("Đa thức 2:");
         txtDathuc1.setEnabled(true);
         txtDathuc2.setEnabled(true);
     }//GEN-LAST:event_btnCongActionPerformed
@@ -548,6 +556,7 @@ public class App extends javax.swing.JFrame {
         loai = 3;
         btnTinh.setEnabled(true);
         lblLoai.setText("Trừ đa thức");
+        lbldathuc2.setText("Đa thức trừ là:");
         txtDathuc1.setEnabled(true);
         txtDathuc2.setEnabled(true);
         // TODO add your handling code here:
@@ -557,6 +566,7 @@ public class App extends javax.swing.JFrame {
         loai = 1;
         btnTinh.setEnabled(true);
         lblLoai.setText("Nhân đa thức");
+        lbldathuc2.setText("Đa thức 2:");
         txtDathuc1.setEnabled(true);
         txtDathuc2.setEnabled(true);
     }//GEN-LAST:event_btnNhanActionPerformed
@@ -573,7 +583,7 @@ public class App extends javax.swing.JFrame {
 
     private void btnDocFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDocFileActionPerformed
         JFileChooser Cuasochon = new JFileChooser();
-        Cuasochon.setApproveButtonText("Lưu");
+        Cuasochon.setApproveButtonText("Mở");
         Cuasochon.showOpenDialog(this);
         File file = Cuasochon.getSelectedFile();
         docFile(file.getPath());
@@ -585,6 +595,7 @@ public class App extends javax.swing.JFrame {
         loai = 0;
         btnTinh.setEnabled(true);
         lblLoai.setText("Chia đa thức");
+        lbldathuc2.setText("Đa thức chia là:");
         txtDathuc1.setEnabled(true);
         txtDathuc2.setEnabled(true);
         // TODO add your handling code here:
@@ -609,8 +620,8 @@ public class App extends javax.swing.JFrame {
     }
 
     public List<History> docFilehistory(String duongdan) {
-        FileReader fr = null;
-        BufferedReader br = null;
+        FileReader fr ;
+        BufferedReader br;
         int bacdaoham = 1;
         Dathuc dathuc1, dathuc2, ketqua, du;
         dathuc1 = new Dathuc();
@@ -632,6 +643,7 @@ public class App extends javax.swing.JFrame {
                         dathuc1 = new Dathuc(ptdong[1]);
                         dathuc2 = new Dathuc(ptdong[2]);
                         ketqua = dathuc1.chiaDathuc(dathuc2)[0];
+                        du = dathuc1.chiaDathuc(dathuc2)[1];
                         break;
                     case 1:
                         dathuc1 = new Dathuc(ptdong[1]);
@@ -684,8 +696,8 @@ public class App extends javax.swing.JFrame {
     }
 
     public List<History> docFile(String duongdan) {
-        FileReader fr = null;
-        BufferedReader br = null;
+        FileReader fr ;
+        BufferedReader br ;
         int bacdaoham = 1;
         Dathuc dathuc1, dathuc2, ketqua, du;
         dathuc1 = new Dathuc();
@@ -707,7 +719,6 @@ public class App extends javax.swing.JFrame {
                         dathuc1 = new Dathuc(ptdong[1]);
                         dathuc2 = new Dathuc(ptdong[2]);
                         ketqua = dathuc1.chiaDathuc(dathuc2)[0];
-
                         break;
                     case 1:
                         dathuc1 = new Dathuc(ptdong[1]);
@@ -731,6 +742,7 @@ public class App extends javax.swing.JFrame {
                     case 4:
                         dathuc1 = new Dathuc(ptdong[1]);
                         bacdaoham = Integer.parseInt(ptdong[2]);
+                        System.out.println(bacdaoham);
                         ketqua = dathuc1.daohamDathuc(bacdaoham);
                         break;
                     case 5:
@@ -743,12 +755,16 @@ public class App extends javax.swing.JFrame {
                     // code block
                 }
                 switch (Integer.parseInt(ptdong[0])) {
-                    case 0:
+                    case 0:                     
                         themLichsu(dathuc1.toString(), dathuc2.toString(), ketqua.toString() + "'" + du.toString(), Integer.parseInt(ptdong[0]));
                         break;
                     case 4:
-                        themLichsu(dathuc1.toString(), Integer.toString(bacdaoham), ketqua.toString(), Integer.parseInt(ptdong[0]));
+                        themLichsu(dathuc1.toString(), ptdong[2], ketqua.toString(), Integer.parseInt(ptdong[0]));
                         break;
+                     case 5:
+                        themLichsu(dathuc1.toString(), ptdong[2], ketqua.toString(), Integer.parseInt(ptdong[0]));
+                        break;
+                            
                     default:
                         themLichsu(dathuc1.toString(), dathuc2.toString(), ketqua.toString(), Integer.parseInt(ptdong[0]));
                         break;
@@ -758,6 +774,7 @@ public class App extends javax.swing.JFrame {
             fr.close();
             br.close();
         } catch (IOException | NumberFormatException ex) {
+            System.out.println(ex);
             JOptionPane.showMessageDialog(null, "Nhập vào sai định dạng", "Lỗi định dạng", 1);
 
         }
@@ -781,23 +798,17 @@ public class App extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(App.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(App.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(App.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(App.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+        //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                App asd = new App();
-                asd.setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            App asd = new App();
+            asd.setVisible(true);
         });
     }
 

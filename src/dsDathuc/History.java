@@ -26,11 +26,8 @@ public class History {
 
     public History(String dathuc1, String dathuc2, String ketqua, int loai) {
         this.dathuc1 = dathuc1;
-        if (loai == 4) {
-            this.dathuc2 = new String();
-        } else {
-            this.dathuc2 = dathuc2;
-        }
+        this.dathuc2 = dathuc2;
+        
         this.ketqua = ketqua;
         this.loai = loai;
         Date date= new Date(System.currentTimeMillis());
